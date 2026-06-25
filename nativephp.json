@@ -1,0 +1,88 @@
+{
+    "namespace": "PushNotification",
+    "bridge_functions": [
+        {
+            "name": "PushNotification.CheckPermission",
+            "ios": "PushFunctions.CheckPermission",
+            "android": "com.lumi.plugins.push.PushFunctions.CheckPermission",
+            "description": "Returns the current notification permission status without prompting."
+        },
+        {
+            "name": "PushNotification.RequestPermission",
+            "ios": "PushFunctions.RequestPermission",
+            "android": "com.lumi.plugins.push.PushFunctions.RequestPermission",
+            "description": "Requests permission if needed, registers for push, and dispatches the enrollment event with the token."
+        },
+        {
+            "name": "PushNotification.GetToken",
+            "ios": "PushFunctions.GetToken",
+            "android": "com.lumi.plugins.push.PushFunctions.GetToken",
+            "description": "Returns the cached FCM token, or empty string if not yet enrolled."
+        },
+        {
+            "name": "PushNotification.ClearBadge",
+            "ios": "PushFunctions.ClearBadge",
+            "android": "com.lumi.plugins.push.PushFunctions.ClearBadge",
+            "description": "Resets the iOS badge to zero / cancels delivered notifications on Android."
+        }
+    ],
+    "events": [
+        "Lumi\\NativePush\\Events\\PushNotificationReceived"
+    ],
+    "android": {
+        "permissions": [
+            "android.permission.POST_NOTIFICATIONS",
+            "android.permission.INTERNET"
+        ],
+        "min_version": 29,
+        "dependencies": {
+            "implementation": [
+                "com.google.firebase:firebase-messaging:24.1.0"
+            ]
+        },
+        "services": [
+            {
+                "name": ".PushMessagingService",
+                "exported": false,
+                "intent-filters": [
+                    { "action": "com.google.firebase.MESSAGING_EVENT" }
+                ]
+            }
+        ],
+        "meta_data": [
+            {
+                "name": "com.google.firebase.messaging.default_notification_channel_id",
+                "value": "default"
+            }
+        ],
+        "init_function": "com.lumi.plugins.push.PushBootstrap.initialize"
+    },
+    "ios": {
+        "min_version": "18.0",
+        "background_modes": ["remote-notification"],
+        "capabilities": ["push-notifications"],
+        "entitlements": {
+            "aps-environment": "${APS_ENVIRONMENT}"
+        },
+        "dependencies": {
+            "pods": [
+                { "name": "FirebaseMessaging", "version": "~> 11.6" }
+            ]
+        },
+        "init_function": "PushBootstrap.initialize"
+    },
+    "assets": {
+        "ios": {
+            "GoogleService-Info.plist": "Resources/GoogleService-Info.plist"
+        },
+        "android": {
+            "google-services.json": "google-services.json"
+        }
+    },
+    "secrets": {
+        "APS_ENVIRONMENT": {
+            "description": "iOS APNs environment: 'development' for local device builds, 'production' for TestFlight/App Store.",
+            "required": true
+        }
+    }
+}

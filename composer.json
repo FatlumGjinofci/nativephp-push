@@ -1,0 +1,42 @@
+{
+    "name": "lumi/nativephp-push",
+    "description": "Free FCM/APNs push notifications for NativePHP Mobile — the native layer that the paid nativephp/mobile-firebase plugin charges for, wired into the existing (MIT) core PHP API.",
+    "type": "nativephp-plugin",
+    "keywords": ["nativephp", "push", "fcm", "apns", "firebase", "notifications"],
+    "license": "MIT",
+    "homepage": "https://github.com/FatlumGjinofci/nativephp-push",
+    "authors": [
+        {
+            "name": "Fatlum Gjinofci",
+            "email": "fgjinofci@gmail.com"
+        }
+    ],
+    "support": {
+        "issues": "https://github.com/FatlumGjinofci/nativephp-push/issues",
+        "source": "https://github.com/FatlumGjinofci/nativephp-push"
+    },
+    "require": {
+        "php": "^8.2",
+        "nativephp/mobile": "^3.2"
+    },
+    "suggest": {
+        "google/auth": "Server-side only: required by Lumi\\NativePush\\Server\\FcmSender to mint FCM v1 tokens. Run `composer require google/auth` on the machine that SENDS pushes."
+    },
+    "autoload": {
+        "psr-4": {
+            "Lumi\\NativePush\\": "src/"
+        }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Lumi\\NativePush\\PushServiceProvider"
+            ]
+        },
+        "nativephp": {
+            "manifest": "nativephp.json"
+        }
+    },
+    "minimum-stability": "stable",
+    "prefer-stable": true
+}

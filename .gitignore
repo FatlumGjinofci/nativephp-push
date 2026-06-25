@@ -1,0 +1,16 @@
+# Dependencies
+/vendor/
+composer.lock
+
+# Firebase config & credentials — NEVER commit these (per-project secrets)
+resources/GoogleService-Info.plist
+resources/google-services.json
+*.p8
+*service-account*.json
+.env
+
+# Editor / OS
+.idea/
+.vscode/
+.DS_Store
+.phpunit.result.cache
