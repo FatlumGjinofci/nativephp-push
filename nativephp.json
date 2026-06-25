@@ -74,10 +74,10 @@
     "assets": {
         "ios": {
             "GoogleService-Info.plist": "Resources/GoogleService-Info.plist"
-        },
-        "android": {
-            "google-services.json": "google-services.json"
         }
+    },
+    "hooks": {
+        "copy_assets": "native-push:copy-assets"
     },
     "secrets": {
         "APS_ENVIRONMENT": {

@@ -4,6 +4,16 @@ All notable changes to this project will be documented in this file.
 
 ## [Unreleased]
 
+### Fixed
+- Android `google-services.json` is now placed at the app module root
+  (`app/google-services.json`) via a `copy_assets` lifecycle hook
+  (`native-push:copy-assets`), where the `com.google.gms.google-services` Gradle
+  plugin expects it. The previous `assets` manifest mapping put it under
+  `app/src/main/assets/` (the wrong location) and failed `native:plugin:validate`.
+  iOS is unaffected.
+
+## [0.1.0] - 2026-06-25
+
 ### Added
 - Native bridge functions for `PushNotification.CheckPermission`, `.RequestPermission`, `.GetToken`, `.ClearBadge` (iOS + Android), wired into NativePHP Mobile core.
 - Token delivery via core's `TokenGenerated` event.

@@ -172,9 +172,10 @@ Tag releases (`git tag v0.1.0 && git push --tags`) so Composer can resolve versi
 
 ### Distribution caveat: Firebase config files
 
-The manifest copies `resources/GoogleService-Info.plist` and `resources/google-services.json` into
-the build, but **those files are each developer's own Firebase config and are git-ignored** — they
-are never committed. That's fine when you consume the plugin as a local `path` repo (you drop your
+The build pulls in `resources/GoogleService-Info.plist` (iOS, via the manifest `assets` map) and
+`resources/google-services.json` (Android, via the `native-push:copy-assets` hook, which places it at
+the Android `app/` module root where the google-services Gradle plugin expects it), but **those files
+are each developer's own Firebase config and are git-ignored** — they are never committed. That's fine when you consume the plugin as a local `path` repo (you drop your
 files into `resources/`). But when it's installed via Composer into `vendor/`, editing files inside
 `vendor/` is wrong.
 
