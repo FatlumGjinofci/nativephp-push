@@ -1,6 +1,6 @@
 # lumi/nativephp-push
 
-A **free**, MIT-licensed replacement for the paid `nativephp/mobile-firebase` plugin.
+A **free**, MIT-licensed plugin.
 
 It implements only the part that actually costs money — the **native Swift/Kotlin layer** — and
 wires it into the push API that already ships in NativePHP Mobile's open-source core. Firebase
@@ -122,68 +122,6 @@ $sender->send(
 ```
 
 ---
-
-## Verify on a real device
-
-Built from the core source (`nativephp/mobile-air`), but compile and confirm:
-
-```bash
-php artisan native:plugin:validate
-php artisan native:install --force
-php artisan native:plugin:install-agent   # free Swift/Kotlin agents for any fixes
-php artisan native:run
-```
-
-Most-likely-to-need-a-tweak spots:
-
-1. **Manifest service schema** — the `android.services[].intent-filters` entry for
-   `com.google.firebase.MESSAGING_EVENT`; confirm the validator accepts it.
-2. **Android Firebase init** — relies on the build applying the google-services plugin so
-   `FirebaseApp.initializeApp(context)` finds config. If not, build `FirebaseOptions` manually.
-3. **Ephemeral boot** — `PushDispatch.dispatchInBackground` calls core's
-   `nativeEphemeralBoot/Artisan/Shutdown`. Confirm the bootstrap path and that a fresh `PHPBridge`
-   in the FCM service can boot without the main runtime (it's a separate TSRM context by design).
-4. **iOS APNs entitlement** — `aps-environment` must match the build (`development` vs `production`).
-5. **iOS background runtime** — `PushObserver` uses `PersistentPHPRuntime.shared.artisan(...)` when
-   not active; a silent push (`content-available: 1`, set automatically by `FcmMessage::event()`)
-   must wake the app for this to run.
-
-## Publishing to GitHub
-
-Before you push, rename the `lumi` / `Lumi\NativePush` / `com.lumi.plugins.push` identifiers to
-your own vendor, fill in the `LICENSE` copyright holder and the `authors`/`support` URLs in
-`composer.json`, then:
-
-```bash
-git init && git add . && git commit -m "Initial commit"
-git branch -M main
-git remote add origin git@github.com:your-vendor/nativephp-push.git
-git push -u origin main
-```
-
-To let others `composer require` it: either submit it to [Packagist](https://packagist.org), or
-have them add a VCS repository to their app's `composer.json`:
-
-```json
-{ "repositories": [ { "type": "vcs", "url": "https://github.com/your-vendor/nativephp-push" } ] }
-```
-
-Tag releases (`git tag v0.1.0 && git push --tags`) so Composer can resolve versions.
-
-### Distribution caveat: Firebase config files
-
-The build pulls in `resources/GoogleService-Info.plist` (iOS, via the manifest `assets` map) and
-`resources/google-services.json` (Android, via the `native-push:copy-assets` hook, which places it at
-the Android `app/` module root where the google-services Gradle plugin expects it), but **those files
-are each developer's own Firebase config and are git-ignored** — they are never committed. That's fine when you consume the plugin as a local `path` repo (you drop your
-files into `resources/`). But when it's installed via Composer into `vendor/`, editing files inside
-`vendor/` is wrong.
-
-For a truly shared package, provide the Firebase config from the **app** instead of the package —
-e.g. publish the files into the app and point the manifest `assets` source at an app path, or
-initialise Firebase programmatically from `${ENV}` secrets (Android `FirebaseOptions`, iOS
-`FirebaseApp.configure(options:)`) so no per-developer files live in the package at all. Pick one
-before you promote this beyond a path/fork install.
 
 ## License
 
