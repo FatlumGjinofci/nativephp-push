@@ -23,7 +23,7 @@ class CopyFirebaseAssetsCommand extends NativePluginHookCommand
 {
     protected $signature = 'native-push:copy-assets';
 
-    protected $description = 'Copy google-services.json to the Android app module root for lumi/nativephp-push';
+    protected $description = 'Copy google-services.json to the Android app module root for fatlum/nativephp-push';
 
     public function handle(): int
     {
@@ -35,7 +35,7 @@ class CopyFirebaseAssetsCommand extends NativePluginHookCommand
         $dest = $this->buildPath().'/app/google-services.json';
 
         if (! file_exists($source)) {
-            $this->warn('lumi/nativephp-push: google-services.json not found in plugin resources; '
+            $this->warn('fatlum/nativephp-push: google-services.json not found in plugin resources; '
                 .'skipping Android Firebase config. Android push will not work until it is added.');
 
             return self::SUCCESS;

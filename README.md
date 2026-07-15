@@ -1,4 +1,4 @@
-# lumi/nativephp-push
+# fatlum/nativephp-push
 
 A **free**, MIT-licensed plugin.
 
@@ -42,8 +42,8 @@ The PHP API, the `TokenGenerated` event, and the on-device event-dispatch route 
 ```
 
 ```bash
-composer require lumi/nativephp-push
-php artisan native:plugin:register lumi/nativephp-push
+composer require fatlum/nativephp-push
+php artisan native:plugin:register fatlum/nativephp-push
 php artisan vendor:publish --tag=native-push-config   # optional
 ```
 

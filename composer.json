@@ -1,5 +1,5 @@
 {
-    "name": "lumi/nativephp-push",
+    "name": "fatlum/nativephp-push",
     "description": "Free FCM/APNs push notifications for NativePHP Mobile — the native layer that the paid nativephp/mobile-firebase plugin charges for, wired into the existing (MIT) core PHP API.",
     "type": "nativephp-plugin",
     "keywords": ["nativephp", "push", "fcm", "apns", "firebase", "notifications"],
