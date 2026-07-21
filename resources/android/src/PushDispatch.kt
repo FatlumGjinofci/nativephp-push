@@ -17,8 +17,11 @@ object PushDispatch {
     fun dispatch(eventClass: String, payload: JSONObject) {
         val activity = MainActivity.instance
         if (activity != null) {
-            // Foreground: reuse core's coordinator (handles main-thread + JS injection).
-            NativeActionCoordinator.dispatchEvent(activity, eventClass, payload.toString())
+            // Foreground: core's coordinator must run on the main thread (FragmentManager
+            // commitNow); FCM callbacks arrive on a background thread, so hop explicitly.
+            activity.runOnUiThread {
+                NativeActionCoordinator.dispatchEvent(activity, eventClass, payload.toString())
+            }
         } else {
             dispatchInBackground(eventClass, payload)
         }
