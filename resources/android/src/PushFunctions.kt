@@ -6,6 +6,7 @@ import android.os.Build
 import androidx.core.app.ActivityCompat
 import androidx.core.app.NotificationManagerCompat
 import androidx.core.content.ContextCompat
+import androidx.fragment.app.FragmentActivity
 import com.google.firebase.messaging.FirebaseMessaging
 import com.nativephp.mobile.bridge.BridgeFunction
 import com.nativephp.mobile.bridge.BridgeResponse
@@ -15,7 +16,7 @@ import org.json.JSONObject
 object PushFunctions {
 
     // PushNotification.CheckPermission
-    class CheckPermission : BridgeFunction {
+    class CheckPermission(@Suppress("UNUSED_PARAMETER") activity: FragmentActivity? = null) : BridgeFunction {
         override fun execute(parameters: Map<String, Any>): Map<String, Any> {
             val context = PushRuntime.appContext
                 ?: return BridgeResponse.success(mapOf("status" to "unknown"))
@@ -32,7 +33,7 @@ object PushFunctions {
     }
 
     // PushNotification.RequestPermission — core's enroll() passes {id, event}.
-    class RequestPermission : BridgeFunction {
+    class RequestPermission(@Suppress("UNUSED_PARAMETER") activity: FragmentActivity? = null) : BridgeFunction {
         override fun execute(parameters: Map<String, Any>): Map<String, Any> {
             (parameters["id"] as? String)?.let { PushRuntime.enrollmentId = it }
             (parameters["event"] as? String)?.takeIf { it.isNotEmpty() }?.let { PushRuntime.tokenEventClass = it }
@@ -62,7 +63,7 @@ object PushFunctions {
     }
 
     // PushNotification.GetToken
-    class GetToken : BridgeFunction {
+    class GetToken(@Suppress("UNUSED_PARAMETER") activity: FragmentActivity? = null) : BridgeFunction {
         override fun execute(parameters: Map<String, Any>): Map<String, Any> {
             PushRuntime.cachedToken?.let { return BridgeResponse.success(mapOf("token" to it)) }
 
@@ -79,7 +80,7 @@ object PushFunctions {
     }
 
     // PushNotification.ClearBadge
-    class ClearBadge : BridgeFunction {
+    class ClearBadge(@Suppress("UNUSED_PARAMETER") activity: FragmentActivity? = null) : BridgeFunction {
         override fun execute(parameters: Map<String, Any>): Map<String, Any> {
             PushRuntime.appContext?.let { NotificationManagerCompat.from(it).cancelAll() }
             return BridgeResponse.success(mapOf("cleared" to true))
