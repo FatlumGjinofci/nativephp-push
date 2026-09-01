@@ -1,8 +1,15 @@
 {
     "name": "fatlum/nativephp-push",
-    "description": "Free FCM/APNs push notifications for NativePHP Mobile — the native layer that the paid nativephp/mobile-firebase plugin charges for, wired into the existing (MIT) core PHP API.",
+    "description": "Free FCM/APNs push notifications for NativePHP Mobile v3 and v4 — the native layer that the paid nativephp/mobile-firebase plugin charges for, wired into the existing (MIT) core PHP API.",
     "type": "nativephp-plugin",
-    "keywords": ["nativephp", "push", "fcm", "apns", "firebase", "notifications"],
+    "keywords": [
+        "nativephp",
+        "push",
+        "fcm",
+        "apns",
+        "firebase",
+        "notifications"
+    ],
     "license": "MIT",
     "homepage": "https://github.com/FatlumGjinofci/nativephp-push",
     "authors": [
@@ -17,7 +24,7 @@
     },
     "require": {
         "php": "^8.2",
-        "nativephp/mobile": "^3.2"
+        "nativephp/mobile": "^3.2|^4.0"
     },
     "suggest": {
         "google/auth": "Server-side only: required by Lumi\\NativePush\\Server\\FcmSender to mint FCM v1 tokens. Run `composer require google/auth` on the machine that SENDS pushes."
@@ -25,6 +32,11 @@
     "autoload": {
         "psr-4": {
             "Lumi\\NativePush\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Lumi\\NativePush\\Tests\\": "tests/"
         }
     },
     "extra": {
@@ -38,5 +50,12 @@
         }
     },
     "minimum-stability": "stable",
-    "prefer-stable": true
+    "prefer-stable": true,
+    "require-dev": {
+        "orchestra/testbench": "^9.0|^10.0",
+        "phpunit/phpunit": "^11.0"
+    },
+    "scripts": {
+        "test": "phpunit"
+    }
 }

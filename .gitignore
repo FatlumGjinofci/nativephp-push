@@ -14,3 +14,6 @@ resources/google-services.json
 .vscode/
 .DS_Store
 .phpunit.result.cache
+
+# Test cache
+.phpunit.cache/

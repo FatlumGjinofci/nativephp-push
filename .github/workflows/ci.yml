@@ -6,19 +6,40 @@ on:
   pull_request:
 
 jobs:
-  validate:
+  test:
     runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          # core 3.3.x needs PHP ^8.3, core 4.x needs PHP ^8.4
+          - php: '8.3'
+            core: '^3.2'
+          - php: '8.4'
+            core: '^4.0'
+    name: PHP ${{ matrix.php }} / nativephp-mobile ${{ matrix.core }}
     steps:
       - uses: actions/checkout@v4
 
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
         with:
-          php-version: '8.2'
+          php-version: ${{ matrix.php }}
           tools: composer:v2
 
-      - name: Validate composer.json
-        run: composer validate --strict
+      - name: Validate composer.json and nativephp.json
+        run: |
+          composer validate --strict
+          php -r 'json_decode(file_get_contents("nativephp.json"), true, 512, JSON_THROW_ON_ERROR); echo "nativephp.json OK\n";'
+
+      - name: Pin core major
+        run: composer require "nativephp/mobile:${{ matrix.core }}" --no-update --no-interaction
+
+      - name: Install
+        run: composer update --prefer-dist --no-interaction --no-progress
 
       - name: Lint PHP
-        run: find src -name '*.php' -print0 | xargs -0 -n1 php -l
+        run: find src tests -name '*.php' -print0 | xargs -0 -n1 php -l
+
+      - name: Test
+        run: vendor/bin/phpunit --no-progress

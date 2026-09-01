@@ -40,12 +40,31 @@
                 "com.google.firebase:firebase-messaging:24.1.0"
             ]
         },
+        "gradle_plugins": [
+            {
+                "id": "com.google.gms.google-services",
+                "version": "4.4.3",
+                "apply_to": "app"
+            }
+        ],
+        "project_files": [
+            {
+                "sources": [
+                    "google-services.json",
+                    "nativephp/resources/google-services.json"
+                ],
+                "destination": "app/google-services.json",
+                "required": true
+            }
+        ],
         "services": [
             {
                 "name": ".PushMessagingService",
                 "exported": false,
                 "intent-filters": [
-                    { "action": "com.google.firebase.MESSAGING_EVENT" }
+                    {
+                        "action": "com.google.firebase.MESSAGING_EVENT"
+                    }
                 ]
             }
         ],
@@ -59,22 +78,34 @@
     },
     "ios": {
         "min_version": "18.0",
-        "background_modes": ["remote-notification"],
-        "capabilities": ["push-notifications"],
+        "background_modes": [
+            "remote-notification"
+        ],
+        "capabilities": [
+            "push-notifications"
+        ],
         "entitlements": {
             "aps-environment": "${APS_ENVIRONMENT}"
         },
         "dependencies": {
             "pods": [
-                { "name": "FirebaseMessaging", "version": "~> 11.6" }
+                {
+                    "name": "FirebaseMessaging",
+                    "version": "~> 11.6"
+                }
             ]
         },
+        "project_files": [
+            {
+                "sources": [
+                    "GoogleService-Info.plist",
+                    "nativephp/resources/GoogleService-Info.plist"
+                ],
+                "destination": "NativePHP/GoogleService-Info.plist",
+                "required": true
+            }
+        ],
         "init_function": "PushBootstrap.initialize"
-    },
-    "assets": {
-        "ios": {
-            "GoogleService-Info.plist": "Resources/GoogleService-Info.plist"
-        }
     },
     "hooks": {
         "copy_assets": "native-push:copy-assets"
